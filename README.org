@@ -1,0 +1,2 @@
+*** Shell scripts
+The repo contains a bunch of shell scripts for easing my tasks.
