@@ -1,0 +1,9 @@
+iconv -f utf-16 -t utf-8 "$1" > clean.csv
+pattern=$2
+cat clean.csv | grep -E "$pattern/01/2024" | cut -d, -f1,3,5 > cleaned.csv
+rm clean.csv
+while read line; do
+	echo -n "$line = ";
+	cat cleaned.csv | grep -w $line | cut -d, -f3 | awk '{sum += $1} END {print sum}';
+done < categories
+rm cleaned.csv

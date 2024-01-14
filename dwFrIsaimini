@@ -1,0 +1,14 @@
+#!/bin/bash
+
+link=$1
+movieName=$(basename $link)
+mkdir $movieName
+cd $movieName
+curl $link > songs.html
+cat songs.html | pup 'a attr{href}' | grep 'download.php' | sed 's/^/https:\/\/isaiminisong.com/'> songs.txt
+count=1
+while read line; do
+  wget --user-agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36" -O "$count.mp3" "$line"
+  count=$((count + 1))
+done < songs.txt
+rm songs.txt songs.html

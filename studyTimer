@@ -1,0 +1,37 @@
+#!/bin/bash
+
+# Pomodoro Script
+
+# Work duration (in seconds)
+WORK_DURATION=1500  # 25 minutes
+# Break duration (in seconds)
+BREAK_DURATION=300  # 5 minutes
+
+LOGFILE=/home/mklno/projects/scripts/pomodaro/logs
+
+# Function to display a notification and speak a message
+function notify_and_speak() {
+    notify-send "$1"
+    espeak -s 190 -p 90 "$2"
+}
+
+# Initial work cycle
+notify_and_speak "Start studying" "Hey, Kafkaa. It's time to study"
+echo "Started at" >> $LOGFILE
+echo date >> $LOGFILE
+sleep $WORK_DURATION
+
+
+# Subsequent work and break cycles
+while true; do
+    notify_and_speak "Break Alert" "Hey, Kafkaa. It's time for a break"
+    echo "Break" >> $LOGFILE
+    echo date >> $LOGFILE
+    sleep $BREAK_DURATION
+
+    notify_and_speak "Start studying" "Hey, Kafkaa. It's time to study"
+    echo "Studying" >> $LOGFILE
+    echo date >> $LOGFILE
+    sleep $WORK_DURATION
+done
+

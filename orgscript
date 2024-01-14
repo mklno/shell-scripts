@@ -1,0 +1,36 @@
+#!/bin/bash
+
+# Directory containing your Markdown files
+markdown_dir="/home/mklno/Documents/Obsidian Vault/Dear diary"
+
+# Output Org file name
+org_file="/home/mklno/diary.org"
+
+# Create or overwrite the Org file
+> "$org_file"
+
+# Loop through the Markdown files
+for markdown_file in "$markdown_dir"/*.md; do
+    if [ -f "$markdown_file" ]; then
+        # Extract date from the Markdown file name (yyyy-mm-dd)
+        date_str=$(basename "$markdown_file" .md)
+        year=$(echo "$date_str" | cut -d'-' -f1)
+        month=$(echo "$date_str" | cut -d'-' -f2)
+        day=$(echo "$date_str" | cut -d'-' -f3)
+        
+        # Convert date to dd-mm-yyyy format
+        new_date_str="${day}-${month}-${year}"
+        
+        # Write the date as the Org mode section title
+        echo "* $new_date_str" >> "$org_file"
+        
+        # Append the content of the Markdown file to the Org file
+        cat "$markdown_file" >> "$org_file"
+        
+        # Add a newline to separate entries
+        echo >> "$org_file"
+    fi
+done
+
+echo "Org file '$org_file' has been created successfully."
+
